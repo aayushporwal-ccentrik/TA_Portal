@@ -3,7 +3,8 @@ const cds = require('@sap/cds');
 const ID_PREFIXES = {
   CANDIDATE: 'CAND',
   APPLICATION: 'APP',
-  JOB: 'JOB'
+  JOB: 'JOB',
+  EMPLOYEE: 'EMP'
 };
 
 async function generateNextId(tx, type) {

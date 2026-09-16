@@ -1,22 +1,55 @@
-# Getting Started
+# TA Portal — backend + frontend
 
-Welcome to your new CAP project.
-
-It contains these folders and files, following our recommended project layout:
+A CAP (Cloud Application Programming Model) backend for the candidate + Talent
+Acquisition onboarding portal, plus the React frontend that runs against it.
 
 File or Folder | Purpose
 ---------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`readme.md` | this getting started guide
+`db/` | domain model (`schema.cds`)
+`srv/` | service definition + implementation, resume parser, mailer, email templates
+`app/` | built frontend static files, served by the backend at runtime (generated — don't edit directly)
+`frontend/` | the React app source (Vite)
+`seed-*.mjs` | one-off scripts to populate demo data / lookup values
 
-## Next Steps
+## Running it
 
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start with your domain model, in a CDS file in `db/`
+The backend serves both the API and the built frontend on the same port, so
+there's only one thing to start day-to-day:
 
-## Learn More
+```bash
+npm install       # backend deps (repo root)
+npm start         # cds-serve, serving API + UI at http://localhost:4004
+```
 
-Learn more at <https://cap.cloud.sap>.
+To work on the frontend itself (hot reload):
+
+```bash
+cd frontend
+npm install
+npm run dev       # Vite dev server on :5173, proxies /odata to :4004
+```
+
+After frontend changes, rebuild and sync into the backend's `app/` folder so
+`npm start` serves the latest UI:
+
+```bash
+cd frontend
+npm run build:backend
+```
+
+## Email
+
+Candidate notifications go out over Gmail SMTP once configured — copy
+`.env.example` to `.env` and fill in `GMAIL_USER` / `GMAIL_APP_PASSWORD`.
+Without those set, the app just logs and skips sending.
+
+## Tests
+
+```bash
+cd frontend
+npm test          # smoke test + full end-to-end flow against an isolated backend instance
+```
+
+## Learn more
+
+CAP docs: <https://cap.cloud.sap>.
